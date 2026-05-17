@@ -1,0 +1,3300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUMO — Mental Wellness Demo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #F9F5E9;
+      --white: #ffffff;
+      --deep: #240046;
+      --purple: #B9B1FF;
+      --lime: #D1DE54;
+      --lavender: #EFE8F8;
+      --muted: #A897BE;
+      --border: rgba(36, 0, 70, 0.07);
+      --sidebar-w: 240px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--deep);
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── DEMO BANNER ── */
+    .demo-banner {
+      background: var(--deep);
+      color: var(--lime);
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .demo-banner a {
+      color: var(--purple);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* ── LAYOUT ── */
+    .app-layout {
+      display: flex;
+      min-height: calc(100vh - 33px);
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: fixed;
+      top: 33px;
+      left: 0;
+      height: calc(100vh - 33px);
+      overflow-y: auto;
+      z-index: 100;
+      transition: transform 0.3s;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      padding: 0 8px;
+    }
+
+    .logo-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--lime);
+      border-radius: 50%;
+    }
+
+    .logo-word {
+      font-family: 'Bagel Fat One', cursive;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: var(--deep);
+    }
+
+    .nav-group {
+      margin-bottom: 20px;
+    }
+
+    .nav-group-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 12px;
+      margin-bottom: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      color: var(--deep);
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+
+    .nav-item:hover {
+      background: var(--lavender);
+    }
+
+    .nav-item.active {
+      background: var(--deep);
+      color: white;
+      font-weight: 600;
+    }
+
+    .nav-dot {
+      width: 5px;
+      height: 5px;
+      background: currentColor;
+      border-radius: 50%;
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+
+    .nav-item.active .nav-dot {
+      opacity: 1;
+      background: var(--lime);
+    }
+
+    .ai-tag {
+      background: var(--lime);
+      color: var(--deep);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .lang-switcher {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .lang-btn {
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .lang-btn.active {
+      background: var(--deep);
+      color: white;
+      border-color: var(--deep);
+    }
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 8px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .sidebar-user:hover {
+      background: var(--lavender);
+    }
+
+    .sidebar-av {
+      width: 32px;
+      height: 32px;
+      background: var(--lavender);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .sidebar-user-name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .sidebar-user-level {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 32px 40px;
+      max-width: 1000px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--deep);
+      border-radius: 20px;
+      padding: 56px 48px 64px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      background: var(--purple);
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.18;
+      top: -100px;
+      right: -60px;
+      pointer-events: none;
+    }
+
+    .hero-glow2 {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: var(--lime);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.07;
+      bottom: -40px;
+      left: 180px;
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .hero-h {
+      font-size: 44px;
+      font-weight: 800;
+      font-style: italic;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .hero-h em {
+      font-style: italic;
+      color: var(--lime);
+    }
+
+    .hero-tagline {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.55);
+      margin-bottom: 28px;
+      max-width: 400px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .btn-lime {
+      background: var(--lime);
+      color: var(--deep);
+      font-weight: 600;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--deep);
+      border: 1px solid rgba(36, 0, 70, 0.2);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: white;
+    }
+
+    .btn-dark {
+      background: var(--deep);
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 7px 14px;
+      font-size: 12px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .page-header {
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--deep);
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── STATS GRID ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .stat-val {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--deep);
+    }
+
+    .stat-unit {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .feature-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .feature-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .feature-btn {
+      background: var(--lavender);
+      color: var(--deep);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .feature-btn:hover {
+      background: var(--purple);
+    }
+
+    /* ── ARTICLES ── */
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .chip {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chip.active,
+    .chip:hover {
+      background: var(--deep);
+      color: white;
+      border-color: var(--deep);
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .article-card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .article-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(36, 0, 70, 0.08);
+    }
+
+    .article-cat {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .article-emoji {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .article-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .article-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── PRACTICES ── */
+    .practices-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .practice-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .practice-card:hover {
+      border-color: var(--lime);
+      transform: translateY(-2px);
+    }
+
+    .practice-emoji {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .practice-name {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .practice-desc {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── DIARY ── */
+    .diary-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 24px;
+    }
+
+    .diary-main {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .diary-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid var(--border);
+    }
+
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .mood-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .mood-btn {
+      font-size: 24px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .mood-btn:hover {
+      border-color: var(--purple);
+      transform: scale(1.1);
+    }
+
+    .mood-btn.selected {
+      border-color: var(--deep);
+      background: var(--lavender);
+      transform: scale(1.12);
+    }
+
+    .diary-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--deep);
+      background: var(--bg);
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .diary-textarea:focus {
+      border-color: var(--purple);
+      background: white;
+    }
+
+    .upsets-joys {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .input-group label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .input-line {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-line input {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      color: var(--deep);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-line input:focus {
+      border-color: var(--purple);
+      background: white;
+    }
+
+    .diary-save-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .diary-private {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .diary-entries {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .diary-entry {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid var(--border);
+    }
+
+    .diary-entry:hover {
+      border-color: var(--purple);
+    }
+
+    .diary-entry-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .diary-entry-emoji {
+      font-size: 20px;
+    }
+
+    .diary-entry-date {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .diary-entry-text {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .question-card {
+      background: var(--lavender);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .question-tag {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 6px;
+    }
+
+    .question-text {
+      font-size: 13px;
+      color: var(--deep);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .insight-card {
+      background: var(--deep);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .insight-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 8px;
+    }
+
+    .insight-text {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.6;
+    }
+
+    /* ── CHAT ── */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 20px;
+      height: calc(100vh - 200px);
+    }
+
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-av {
+      width: 36px;
+      height: 36px;
+      background: var(--deep);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .chat-name {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .chat-status {
+      font-size: 11px;
+      color: #22c55e;
+    }
+
+    .chat-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chat-msg {
+      display: flex;
+      gap: 10px;
+      max-width: 80%;
+    }
+
+    .chat-msg.user {
+      flex-direction: row-reverse;
+      align-self: flex-end;
+    }
+
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .chat-msg.lumo .chat-bubble {
+      background: var(--lavender);
+      color: var(--deep);
+      border-radius: 4px 16px 16px 16px;
+    }
+
+    .chat-msg.user .chat-bubble {
+      background: var(--deep);
+      color: white;
+      border-radius: 16px 4px 16px 16px;
+    }
+
+    .chat-msg-av {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .chat-msg.user .chat-msg-av {
+      background: var(--purple);
+    }
+
+    .chat-input-row {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      color: var(--deep);
+      background: var(--bg);
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: var(--purple);
+      background: white;
+    }
+
+    .chat-send {
+      padding: 10px 18px;
+      background: var(--deep);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .chat-send:hover {
+      opacity: 0.88;
+    }
+
+    .chat-send:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .typing-indicator {
+      display: none;
+      gap: 4px;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--lavender);
+      border-radius: 4px 16px 16px 16px;
+      width: fit-content;
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: typingBounce 1.2s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBounce {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0)
+      }
+
+      30% {
+        transform: translateY(-6px)
+      }
+    }
+
+    .chat-sidebar-card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .chat-topics {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chat-topic-btn {
+      padding: 9px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      color: var(--deep);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+
+    .chat-topic-btn:hover {
+      background: var(--lavender);
+      border-color: var(--purple);
+    }
+
+    .rec-card {
+      background: var(--lavender);
+      border: 1px solid var(--purple);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .rec-card:hover {
+      background: var(--purple);
+    }
+
+    .rec-emoji {
+      font-size: 20px;
+    }
+
+    .rec-name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .rec-reason {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── PSYCHOLOGISTS ── */
+    .psych-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .psych-card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .psych-av {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--lavender);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .psych-info {
+      flex: 1;
+    }
+
+    .psych-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .psych-spec {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .psych-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .psych-tag {
+      font-size: 10px;
+      background: var(--lavender);
+      color: var(--deep);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .psych-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .psych-price {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--deep);
+    }
+
+    .psych-price span {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+    }
+
+    .psych-rating {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .psych-stars {
+      color: #f59e0b;
+    }
+
+    .psych-book-btn {
+      padding: 9px 18px;
+      background: var(--lime);
+      color: var(--deep);
+      border: none;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .psych-book-btn:hover {
+      opacity: 0.88;
+    }
+
+    .psych-online {
+      font-size: 11px;
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    /* ── PROFILE ── */
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
+    .prof-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .prof-av {
+      font-size: 48px;
+      margin-bottom: 12px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .prof-name {
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .prof-level {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 16px;
+    }
+
+    .prof-bio {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .prof-progress {
+      background: var(--bg);
+      border-radius: 20px;
+      height: 6px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .prof-progress-bar {
+      height: 100%;
+      background: var(--lime);
+      border-radius: 20px;
+      transition: width 0.5s;
+    }
+
+    .prof-xp-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .prof-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .prof-stat {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .prof-stat-val {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .prof-stat-lbl {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .achievement {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .achievement.earned {
+      background: var(--lavender);
+      border-color: var(--purple);
+    }
+
+    .achievement-emoji {
+      font-size: 20px;
+    }
+
+    .achievement-label {
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .achievement-desc {
+      font-size: 9px;
+      color: var(--muted);
+    }
+
+    .missions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mission-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .mission-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .mission-check.done {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: var(--deep);
+    }
+
+    .mission-title {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .mission-sub {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .mission-xp {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── ARTICLE DETAIL ── */
+    .article-detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 28px;
+    }
+
+    .article-hero-img {
+      font-size: 64px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .article-lead {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.6;
+      color: var(--deep);
+      margin-bottom: 24px;
+    }
+
+    .article-h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 24px 0 10px;
+    }
+
+    .article-p {
+      font-size: 13px;
+      color: #4a3a5c;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .article-infobox {
+      background: var(--lavender);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .article-infobox-icon {
+      font-size: 20px;
+    }
+
+    .article-infobox-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .article-infobox-text {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .article-cta-box {
+      background: var(--deep);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .article-cta-icon {
+      font-size: 24px;
+    }
+
+    .article-cta-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .article-cta-text {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .article-sidebar-meta {
+      background: var(--lavender);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .article-sidebar-meta-item {
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+
+    .article-sidebar-meta-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      margin-bottom: 20px;
+      background: none;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .back-btn:hover {
+      color: var(--deep);
+    }
+
+    /* ── PRACTICE DETAIL ── */
+    .practice-detail {
+      max-width: 680px;
+    }
+
+    .practice-hero-emoji {
+      font-size: 56px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .practice-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .practice-step {
+      display: flex;
+      gap: 14px;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .practice-step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--deep);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .practice-step-text {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ── API KEY SETUP ── */
+    .api-key-banner {
+      background: var(--lavender);
+      border: 1px solid var(--purple);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .api-key-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      color: var(--deep);
+      background: white;
+      outline: none;
+    }
+
+    .api-key-input:focus {
+      border-color: var(--purple);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--deep);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      z-index: 9999;
+      animation: toastIn 0.3s ease;
+      max-width: 320px;
+    }
+
+    @keyframes toastIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    /* ── BOOKING MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 420px;
+      width: 90%;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .modal-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .time-slot {
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .time-slot.selected {
+      background: var(--deep);
+      color: white;
+      border-color: var(--deep);
+    }
+
+    .time-slot:hover:not(.selected) {
+      border-color: var(--purple);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ── BURGER MOBILE ── */
+    .burger {
+      display: none;
+      position: fixed;
+      top: 50px;
+      left: 16px;
+      z-index: 200;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .burger-line {
+      width: 18px;
+      height: 2px;
+      background: var(--deep);
+      border-radius: 2px;
+    }
+
+    /* ── CALENDAR ── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      padding: 4px 0;
+      text-transform: uppercase;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .cal-day:hover {
+      border-color: var(--border);
+    }
+
+    .cal-day.today {
+      border-color: var(--purple);
+      font-weight: 700;
+    }
+
+    .cal-day.has-entry {
+      background: var(--lavender);
+    }
+
+    .cal-day.selected {
+      background: var(--deep);
+      color: white;
+    }
+
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cal-nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 4px 8px;
+    }
+
+    .cal-nav-btn:hover {
+      color: var(--deep);
+    }
+
+    .cal-month {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── MOOD CHART ── */
+    .chart-wrap {
+      position: relative;
+      height: 160px;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      :root {
+        --sidebar-w: 0px;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        width: 240px;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 16px;
+      }
+
+      .burger {
+        display: flex;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .practices-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .articles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .diary-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .article-detail-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .upsets-joys {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="demo-banner">
+    🎭 Demo Mode — all data saves locally in your browser · No login required ·
+  </div>
+
+  <div class="app-layout">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-dot"></div>
+        <span class="logo-word">LUMO</span>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">Explore</div>
+        <button class="nav-item active" onclick="showPage('home')"><span class="nav-dot"></span> Home</button>
+        <button class="nav-item" onclick="showPage('articles')"><span class="nav-dot"></span> Articles &
+          Practices</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Tools</div>
+        <button class="nav-item" onclick="showPage('diary')"><span class="nav-dot"></span> My Diary <span
+            class="ai-tag">AI</span></button>
+        <button class="nav-item" onclick="showPage('chat')"><span class="nav-dot"></span> Chat with LUMO <span
+            class="ai-tag">AI</span></button>
+        <button class="nav-item" onclick="showPage('psychologists')"><span class="nav-dot"></span> Find a
+          Therapist</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">You</div>
+        <button class="nav-item" onclick="showPage('profile')"><span class="nav-dot"></span> My Profile</button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" onclick="setLang('kk')">ҚАЗ</button>
+        </div>
+        <div class="sidebar-user" onclick="showPage('profile')">
+          <div class="sidebar-av" id="sb-avatar">😊</div>
+          <div>
+            <div class="sidebar-user-name" id="sb-name">Demo User</div>
+            <div class="sidebar-user-level" id="sb-level">Level 1 · Beginner</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <button class="burger" id="burger" onclick="toggleSidebar()">
+      <div class="burger-line"></div>
+      <div class="burger-line"></div>
+      <div class="burger-line"></div>
+    </button>
+
+    <!-- ── MAIN ── -->
+    <main class="main" id="main">
+
+      <!-- ═══ HOME ═══ -->
+      <div id="page-home" class="page active">
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-glow2"></div>
+          <div class="hero-eyebrow">Mental wellness · AI-powered</div>
+          <h1 class="hero-h">Your mind deserves<br>a <em>guide</em>,<br>not just an app.</h1>
+          <p class="hero-tagline">LUMO — your personal companion in the world of mental health.</p>
+          <div class="hero-btns">
+            <button class="btn btn-lime" onclick="showPage('chat')">Talk to LUMO →</button>
+            <button class="btn btn-ghost" onclick="showPage('psychologists')">Find a Therapist</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Your progress</div>
+          <div class="stats-grid">
+            <div class="stat">
+              <div class="stat-lbl">Streak</div>
+              <div class="stat-val" id="home-streak">—</div>
+              <div class="stat-unit">days 🔥</div>
+            </div>
+            <div class="stat">
+              <div class="stat-lbl">Diary entries</div>
+              <div class="stat-val" id="home-entries">—</div>
+              <div class="stat-unit">total</div>
+            </div>
+            <div class="stat">
+              <div class="stat-lbl">Chat messages</div>
+              <div class="stat-val" id="home-msgs">—</div>
+              <div class="stat-unit">this session</div>
+            </div>
+            <div class="stat">
+              <div class="stat-lbl">XP Points</div>
+              <div class="stat-val" id="home-xp">—</div>
+              <div class="stat-unit">earned</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Why LUMO</div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-num">01</div>
+              <div class="feature-icon">🧠</div>
+              <div class="feature-title">AI companion LUMO</div>
+              <div class="feature-desc">Your personal AI available 24/7. Ask anything, explore emotions deeply, receive
+                guided reflection with no judgment.</div>
+              <button class="feature-btn" onclick="showPage('chat')">Try LUMO →</button>
+            </div>
+            <div class="feature-card">
+              <div class="feature-num">02</div>
+              <div class="feature-icon">📓</div>
+              <div class="feature-title">My Diary</div>
+              <div class="feature-desc">Log your mood daily. LUMO asks smart follow-up questions to help you understand
+                patterns in your emotional life.</div>
+              <button class="feature-btn" onclick="showPage('diary')">Open Diary →</button>
+            </div>
+            <div class="feature-card">
+              <div class="feature-num">03</div>
+              <div class="feature-icon">🧑‍⚕️</div>
+              <div class="feature-title">Real Therapists</div>
+              <div class="feature-desc">Browse and book verified psychologists — filtered by specialty, approach,
+                language, and price.</div>
+              <button class="feature-btn" onclick="showPage('psychologists')">Find a Therapist →</button>
+            </div>
+            <div class="feature-card">
+              <div class="feature-num">04</div>
+              <div class="feature-icon">📖</div>
+              <div class="feature-title">Articles & Practices</div>
+              <div class="feature-desc">Science-backed reads on anxiety and mood. Plus guided practices: art therapy,
+                meditation, breathwork, and more.</div>
+              <button class="feature-btn" onclick="showPage('articles')">Explore →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ARTICLES ═══ -->
+      <div id="page-articles" class="page">
+        <div class="page-header">
+          <div class="page-title">Articles & Practices</div>
+          <div class="page-sub">Curated knowledge for your inner world</div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Articles</div>
+          <div class="chip-row" id="articles-filter">
+            <div class="chip active" onclick="filterArticles('All')">All</div>
+            <div class="chip" onclick="filterArticles('Psychology')">Psychology</div>
+            <div class="chip" onclick="filterArticles('Anxiety')">Anxiety</div>
+            <div class="chip" onclick="filterArticles('Self-awareness')">Self-awareness</div>
+            <div class="chip" onclick="filterArticles('Relationships')">Relationships</div>
+            <div class="chip" onclick="filterArticles('Sleep')">Sleep</div>
+          </div>
+          <div class="articles-grid" id="articles-grid"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-label">Practices</div>
+          <div class="practices-grid" id="practices-grid"></div>
+        </div>
+      </div>
+
+      <!-- ═══ ARTICLE DETAIL ═══ -->
+      <div id="page-article-detail" class="page">
+        <button class="back-btn" onclick="showPage('articles')">← Back to Articles</button>
+        <div class="article-detail-layout">
+          <div>
+            <div id="detail-hero-emoji" class="article-hero-img"></div>
+            <div id="detail-lead" class="article-lead"></div>
+            <div id="detail-content"></div>
+            <div class="article-cta-box">
+              <div class="article-cta-icon">📓</div>
+              <div>
+                <div class="article-cta-title">Start tracking your mood</div>
+                <div class="article-cta-text">Use LUMO's emotion diary to discover your own patterns.</div>
+              </div>
+              <button class="btn btn-lime btn-sm" onclick="showPage('diary')">Open Diary →</button>
+            </div>
+          </div>
+          <div>
+            <div class="article-sidebar-meta">
+              <div class="article-sidebar-meta-item">
+                <div class="article-sidebar-meta-lbl">Author</div>
+                <div id="detail-author"></div>
+              </div>
+              <div class="article-sidebar-meta-item">
+                <div class="article-sidebar-meta-lbl">Read time</div>
+                <div id="detail-readtime"></div>
+              </div>
+              <div class="article-sidebar-meta-item">
+                <div class="article-sidebar-meta-lbl">Category</div>
+                <div id="detail-category"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PRACTICE DETAIL ═══ -->
+      <div id="page-practice-detail" class="page">
+        <button class="back-btn" onclick="showPage('articles')">← Back to Practices</button>
+        <div class="practice-detail">
+          <div id="practice-hero-emoji" class="practice-hero-emoji"></div>
+          <div class="page-title" id="practice-title"></div>
+          <div class="page-sub" id="practice-desc" style="margin-top:8px;margin-bottom:20px;"></div>
+          <div class="practice-steps" id="practice-steps"></div>
+          <div style="margin-top:24px;">
+            <button class="btn btn-lime" onclick="markPracticeDone()">✓ Mark as Complete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ DIARY ═══ -->
+      <div id="page-diary" class="page">
+        <div class="page-header">
+          <div class="page-title">Emotion Diary</div>
+          <div class="page-sub">A safe space to process what you feel</div>
+        </div>
+
+        <div class="diary-layout">
+          <div class="diary-main">
+            <!-- Calendar -->
+            <div class="card">
+              <div class="card-label">Mood calendar</div>
+              <div class="cal-nav">
+                <button class="cal-nav-btn" onclick="changeMonth(-1)">←</button>
+                <div class="cal-month" id="cal-month-label"></div>
+                <button class="cal-nav-btn" onclick="changeMonth(1)">→</button>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+            </div>
+
+            <!-- Entry form -->
+            <div class="card" id="diary-form-card">
+              <div class="card-label" id="diary-date-label">Today's entry</div>
+              <div class="card-title">How are you feeling?</div>
+              <div class="mood-row" style="margin-top:14px;">
+                <button class="mood-btn" onclick="selectMood('😊')" title="Happy">😊</button>
+                <button class="mood-btn" onclick="selectMood('😌')" title="Calm">😌</button>
+                <button class="mood-btn" onclick="selectMood('😰')" title="Anxious">😰</button>
+                <button class="mood-btn" onclick="selectMood('😔')" title="Sad">😔</button>
+                <button class="mood-btn" onclick="selectMood('😤')" title="Angry">😤</button>
+                <button class="mood-btn" onclick="selectMood('🥳')" title="Excited">🥳</button>
+                <button class="mood-btn" onclick="selectMood('😶')" title="Numb">😶</button>
+              </div>
+              <div style="margin-top:14px;">
+                <label style="font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:8px;">Write
+                  freely</label>
+                <textarea class="diary-textarea" id="diary-note"
+                  placeholder="What's on your mind today? There is no right or wrong — just honesty."></textarea>
+                <div class="diary-private" style="margin-top:6px;">🔒 Only you can see this</div>
+              </div>
+              <div class="upsets-joys" style="margin-top:16px;">
+                <div class="input-group">
+                  <label>3 things that upset you today</label>
+                  <div class="input-line">
+                    <input type="text" id="upset1" placeholder="Something that bothered you...">
+                    <input type="text" id="upset2" placeholder="Something that bothered you...">
+                    <input type="text" id="upset3" placeholder="Something that bothered you...">
+                  </div>
+                </div>
+                <div class="input-group">
+                  <label>3 things that made you happy</label>
+                  <div class="input-line">
+                    <input type="text" id="joy1" placeholder="Something that made you smile...">
+                    <input type="text" id="joy2" placeholder="Something that made you smile...">
+                    <input type="text" id="joy3" placeholder="Something that made you smile...">
+                  </div>
+                </div>
+              </div>
+              <div class="diary-save-row" style="margin-top:16px;">
+                <button class="btn btn-lime" onclick="saveDiaryEntry()">Save entry</button>
+                <span class="diary-private" id="diary-save-msg"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="diary-sidebar">
+            <!-- Reflection questions -->
+            <div class="card">
+              <div class="card-label">LUMO asks...</div>
+              <div id="diary-questions"></div>
+              <button class="btn btn-outline btn-sm" onclick="showPage('chat')"
+                style="margin-top:8px;width:100%;">Explore with LUMO →</button>
+            </div>
+
+            <!-- LUMO insight -->
+            <div class="insight-card">
+              <div class="insight-label">LUMO's insight</div>
+              <div class="insight-text" id="diary-insight">Save your first entry to get a personalized insight from LUMO
+                💜</div>
+            </div>
+
+            <!-- Previous entries -->
+            <div class="card">
+              <div class="card-label">Previous entries</div>
+              <div class="diary-entries" id="diary-prev-entries">
+                <div style="font-size:12px;color:var(--muted)">No entries yet. Start writing!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ CHAT ═══ -->
+      <div id="page-chat" class="page">
+        <div class="page-header">
+          <div class="page-title">Chat with LUMO</div>
+          <div class="page-sub">Your AI companion for emotional clarity</div>
+        </div>
+
+
+
+        <div class="chat-layout">
+          <div class="chat-main">
+            <div class="chat-header">
+              <div class="chat-av">🌙</div>
+              <div>
+                <div class="chat-name">LUMO</div>
+                <div class="chat-status">● Online</div>
+              </div>
+            </div>
+            <div class="chat-msgs" id="chat-msgs">
+              <div class="chat-msg lumo">
+                <div class="chat-msg-av">🌙</div>
+                <div>
+                  <div class="chat-bubble">Hi there 🌙 I'm LUMO, your personal mental wellness companion. How are you
+                    feeling today? I'm here to listen — no judgment, just you and me 💜</div>
+                </div>
+              </div>
+              <div class="typing-indicator" id="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+              </div>
+            </div>
+            <div class="chat-input-row">
+              <input class="chat-input" id="chat-input" placeholder="Write to LUMO..."
+                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}">
+              <button class="chat-send" id="chat-send-btn" onclick="sendChatMessage()">Send</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="chat-sidebar-card">
+              <div class="card-label">Suggested topics</div>
+              <div class="chat-topics">
+                <button class="chat-topic-btn" onclick="sendTopic('Managing overthinking')">💭 Managing
+                  overthinking</button>
+                <button class="chat-topic-btn" onclick="sendTopic('Sleep and anxiety')">😴 Sleep and anxiety</button>
+                <button class="chat-topic-btn" onclick="sendTopic('Work-life balance')">⚖️ Work-life balance</button>
+                <button class="chat-topic-btn" onclick="sendTopic('Relationship patterns')">💞 Relationship
+                  patterns</button>
+                <button class="chat-topic-btn" onclick="sendTopic('Dealing with stress')">🌊 Dealing with
+                  stress</button>
+              </div>
+            </div>
+            <div class="chat-sidebar-card">
+              <div class="card-label">Need a real human?</div>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">A therapist goes beyond what I can
+                offer.</div>
+              <button class="btn btn-outline btn-sm" style="width:100%" onclick="showPage('psychologists')">Find a
+                Therapist →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PSYCHOLOGISTS ═══ -->
+      <div id="page-psychologists" class="page">
+        <div class="page-header">
+          <div class="page-title">Find a Therapist</div>
+          <div class="page-sub">Verified professionals, matched to you</div>
+        </div>
+
+        <div class="chip-row">
+          <div class="chip active" onclick="filterPsychs('All')">All</div>
+          <div class="chip" onclick="filterPsychs('CBT')">CBT</div>
+          <div class="chip" onclick="filterPsychs('Anxiety')">Anxiety</div>
+          <div class="chip" onclick="filterPsychs('Trauma')">Trauma</div>
+          <div class="chip" onclick="filterPsychs('Depression')">Depression</div>
+          <div class="chip" onclick="filterPsychs('Relationships')">Relationships</div>
+        </div>
+
+        <div class="psych-grid" id="psych-grid"></div>
+      </div>
+
+      <!-- ═══ PROFILE ═══ -->
+      <div id="page-profile" class="page">
+        <div class="page-header">
+          <div class="page-title">My Profile</div>
+          <div class="page-sub">Your wellness journey</div>
+        </div>
+
+        <div class="profile-layout">
+          <div>
+            <div class="prof-card" style="margin-bottom:16px;">
+              <div class="prof-av" id="prof-av" onclick="cycleAvatar()" title="Click to change avatar">😊</div>
+              <div class="prof-name" id="prof-name" contenteditable="true" onblur="saveName(this.textContent)">Demo User
+              </div>
+              <div class="prof-level" id="prof-level">Level 1 · Beginner</div>
+              <div class="prof-bio" id="prof-bio" contenteditable="true" onblur="saveBio(this.textContent)">Click to add
+                your bio...</div>
+              <div class="prof-progress">
+                <div class="prof-progress-bar" id="prof-bar" style="width:0%"></div>
+              </div>
+              <div class="prof-xp-row">
+                <span id="prof-xp-cur">0 XP</span>
+                <span id="prof-xp-next">→ Level 2</span>
+              </div>
+              <div class="prof-stats" style="margin-top:16px;">
+                <div class="prof-stat">
+                  <div class="prof-stat-val" id="prof-streak">0</div>
+                  <div class="prof-stat-lbl">Streak 🔥</div>
+                </div>
+                <div class="prof-stat">
+                  <div class="prof-stat-val" id="prof-entries-count">0</div>
+                  <div class="prof-stat-lbl">Entries</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-label">Achievements</div>
+              <div class="achievements-grid" id="achievements-grid"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:16px;">
+              <div class="card-label">Mood Analytics — this month</div>
+              <div class="chart-wrap"><canvas id="mood-chart"></canvas></div>
+            </div>
+
+            <div class="card">
+              <div class="card-label">Daily missions</div>
+              <div class="missions-list" id="missions-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main><!-- end main -->
+  </div><!-- end app-layout -->
+
+  <!-- ── BOOKING MODAL ── -->
+  <div class="modal-overlay" id="booking-modal">
+    <div class="modal-box">
+      <div class="modal-title" id="booking-psych-name"></div>
+      <div class="modal-sub">Choose a time slot for your session (50 min)</div>
+      <div class="time-grid" id="time-slots"></div>
+      <div class="modal-actions">
+        <button class="btn btn-lime" onclick="confirmBooking()">Confirm Booking</button>
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════════════════════
+    // DATA STORE — localStorage wrapper
+    // ══════════════════════════════════════════════════════════
+    const Store = {
+      get: (k, def = null) => { try { const v = localStorage.getItem('lumo_' + k); return v ? JSON.parse(v) : def; } catch { return def; } },
+      set: (k, v) => { try { localStorage.setItem('lumo_' + k, JSON.stringify(v)); } catch { } },
+    };
+
+    // Default user
+    function getUser() {
+      return Store.get('user', { name: 'Demo User', avatar: '😊', bio: '', points: 0, streak: 0, achievements: [] });
+    }
+    function saveUser(u) { Store.set('user', u); }
+
+    // Diary entries: { "2026-05-17": { emoji, note, upsets, joys, date } }
+    function getDiary() { return Store.get('diary', {}); }
+    function saveDiary(d) { Store.set('diary', d); }
+
+    // Chat history
+    function getChatHistory() { return Store.get('chatHistory', []); }
+    function saveChatHistory(h) { Store.set('chatHistory', h); }
+
+    // Missions state
+    function getMissions() {
+      return Store.get('missions', [
+        { id: 'diary', title: 'Write in your diary', desc: 'Daily reflection', xp: 50, trigger: 'diary', done: false },
+        { id: 'chat', title: 'Chat with LUMO', desc: 'AI conversation', xp: 30, trigger: 'chat', done: false },
+        { id: 'article', title: 'Read one article', desc: 'Learn something new', xp: 40, trigger: 'article', done: false },
+        { id: 'practice', title: 'Complete a practice', desc: 'Mindful exercise', xp: 60, trigger: 'practice', done: false },
+      ]);
+    }
+    function saveMissions(m) { Store.set('missions', m); }
+
+    // ── LEVELS ──
+    const LEVELS = [
+      { min: 0, max: 499, num: 1, title: 'Beginner' },
+      { min: 500, max: 1499, num: 2, title: 'Explorer' },
+      { min: 1500, max: 2999, num: 3, title: 'Seeker' },
+      { min: 3000, max: 5999, num: 4, title: 'Guide' },
+      { min: 6000, max: Infinity, num: 5, title: 'Master' },
+    ];
+    function getLevel(pts) { return LEVELS.find(l => pts >= l.min && pts <= l.max) || LEVELS[0]; }
+
+    const ACHIEVEMENTS_DEF = [
+      { id: 'first_step', emoji: '🌱', label: 'First Step', desc: 'First diary entry' },
+      { id: 'streak_3', emoji: '🔥', label: '3 Day Streak', desc: '3 days in a row' },
+      { id: 'streak_7', emoji: '💎', label: '7 Day Streak', desc: 'Week streak' },
+      { id: 'curious_mind', emoji: '🧠', label: 'Curious Mind', desc: 'Read 3 articles' },
+      { id: 'chatterbox', emoji: '💬', label: 'Chatterbox', desc: '10 chat messages' },
+      { id: 'zen_master', emoji: '🧘', label: 'Zen Master', desc: 'Complete a practice' },
+    ];
+
+    // ══════════════════════════════════════════════════════════
+    // CONTENT DATA
+    // ══════════════════════════════════════════════════════════
+    const ARTICLES = [
+      {
+        id: 'art1', emoji: '🌊', category: 'Anxiety',
+        title: "Why does anxiety feel physical?", author: 'Dr. Elena Moore', readtime: '7 min read',
+        desc: 'The body-mind connection in anxiety disorders — and how to calm the storm.',
+        lead: "Anxiety isn't just in your head. Understanding how it lives in your body is the first step to freedom.",
+        sections: [
+          { heading: 'The nervous system on high alert', content: 'When your brain perceives a threat — real or imagined — it triggers the fight-or-flight response. Adrenaline floods your system, your heart races, muscles tighten. This ancient survival mechanism doesn\'t know the difference between a predator and a difficult email.' },
+          { heading: 'The feedback loop', content: 'Physical symptoms trigger more anxiety, which triggers more symptoms. This cycle can feel overwhelming. But once you understand it, you can interrupt it at any point — through breathwork, movement, or simply naming what\'s happening.' },
+          { heading: 'Somatic awareness as a superpower', content: 'Learning to notice physical sensations without judgment — tightness in the chest, shallow breathing, tingling in the hands — is the foundation of anxiety relief. Your body is always telling you something. The practice is learning to listen.' },
+        ],
+        infobox: { title: 'Quick relief technique', text: 'When anxiety peaks, try box breathing: inhale 4 counts, hold 4, exhale 4, hold 4. Repeat 4 times. This directly activates your parasympathetic nervous system.' }
+      },
+      {
+        id: 'art2', emoji: '🧠', category: 'Psychology',
+        title: "The science of emotional intelligence", author: 'Alex Voronov', readtime: '10 min read',
+        desc: 'Why people with high EQ navigate life better — and how you can develop it.',
+        lead: "Emotional intelligence — the ability to recognize, understand and manage emotions — predicts success better than IQ in many domains of life.",
+        sections: [
+          { heading: 'Four pillars of EQ', content: 'Psychologist Daniel Goleman identified four core components: self-awareness (knowing your feelings), self-regulation (managing impulses), empathy (reading others), and social skills (navigating relationships). Each can be deliberately practiced.' },
+          { heading: 'The name it to tame it principle', content: 'Neuroscience research shows that labeling emotions activates the prefrontal cortex and reduces amygdala activity — in plain terms, naming what you feel literally calms your brain. "I\'m feeling overwhelmed" is more powerful than you think.' },
+          { heading: 'Building EQ as a skill', content: 'Unlike IQ, emotional intelligence is highly trainable. Practices like mindfulness, reflective journaling, and even just pausing before reacting all build your EQ over time. The diary and chat features in LUMO are designed exactly for this.' },
+        ],
+        infobox: { title: 'Try this today', text: 'Before bed, write down 3 emotions you felt today. Name each one precisely. Not just "bad" — was it frustrated? Disappointed? Lonely? Precision builds emotional vocabulary and self-awareness.' }
+      },
+      {
+        id: 'art3', emoji: '🌙', category: 'Sleep',
+        title: "How sleep affects your emotional regulation", author: 'Mia Santos', readtime: '6 min read',
+        desc: 'The underrated connection between sleep quality and mental wellbeing.',
+        lead: "One bad night of sleep makes the emotional brain 60% more reactive to negative stimuli. Sleep is not optional — it's the foundation of mental health.",
+        sections: [
+          { heading: 'What happens during sleep', content: 'While you sleep, your brain processes the day\'s emotional experiences, consolidating memories and "filing" emotions. Without adequate sleep, this processing is incomplete — you wake carrying yesterday\'s emotional weight plus a depleted ability to cope.' },
+          { heading: 'The 90-minute rule', content: 'Sleep cycles last about 90 minutes. Waking in the middle of a cycle feels terrible; waking at the end feels refreshing. Try planning sleep in 90-minute multiples: 6 hours, 7.5 hours, or 9 hours.' },
+          { heading: 'Wind-down rituals', content: 'Your nervous system needs a transition from the stimulation of the day to the calm of sleep. A 20-30 minute wind-down — dim lights, gentle stretching, no screens — can dramatically improve sleep quality and, by extension, emotional resilience.' },
+        ],
+        infobox: { title: 'Sleep hygiene tip', text: 'Keep your bedroom 1-2°C cooler than your daytime preference. Core body temperature needs to drop for sleep to begin. Cool environments accelerate this process.' }
+      },
+      {
+        id: 'art4', emoji: '💞', category: 'Relationships',
+        title: "Attachment styles and how they shape you", author: 'Dr. Elena Moore', readtime: '8 min read',
+        desc: 'Understanding your attachment pattern is the key to healthier relationships.',
+        lead: "The way you relate to others in adulthood is deeply shaped by your earliest bonds. But attachment patterns can be changed — at any age.",
+        sections: [
+          { heading: 'Four attachment styles', content: 'Secure attachment: comfortable with intimacy and independence. Anxious: preoccupied with relationship stability, craves closeness. Avoidant: values independence, uncomfortable with too much closeness. Disorganized: inconsistent, often linked to early trauma.' },
+          { heading: 'Why patterns repeat', content: 'We unconsciously recreate familiar relationship dynamics because they feel predictable — even when they\'re painful. Recognizing your pattern is the first step to changing it.' },
+          { heading: 'Earned security', content: 'Research shows that with insight and intentional practice — including therapy — anyone can develop more secure attachment. You are not locked into the patterns of your past.' },
+        ],
+        infobox: { title: 'Reflect on this', text: 'Think of your closest relationship. When you feel distressed, do you tend to seek closeness, pull away, or freeze? Your instinctive response reveals your attachment style.' }
+      },
+      {
+        id: 'art5', emoji: '🌿', category: 'Self-awareness',
+        title: "Mindfulness is not about emptying your mind", author: 'Alex Voronov', readtime: '5 min read',
+        desc: 'The biggest misconception about mindfulness — and what it actually means.',
+        lead: "Most people give up on mindfulness because they misunderstand the goal. Meditation isn't about stopping thoughts — it's about changing your relationship to them.",
+        sections: [
+          { heading: 'The real goal', content: 'Mindfulness is the practice of noticing what\'s happening — in your body, your mind, your environment — without immediately reacting. Thoughts arise. That\'s normal. The practice is noticing them without getting swept away.' },
+          { heading: 'The observer self', content: 'When you practice mindfulness regularly, you develop what psychologists call the "observer self" — a part of you that can watch your thoughts and feelings with some distance. "I notice I\'m having the thought that I\'m not good enough." This creates space between stimulus and response.' },
+          { heading: 'Starting small', content: 'Even 5 minutes daily builds the neural pathways associated with present-moment awareness. The LUMO meditation and breathing practices are designed for exactly this — accessible, evidence-based, and genuinely useful.' },
+        ],
+        infobox: { title: '1-minute mindfulness', text: 'Right now: take one breath slowly. Feel the air enter your nostrils, fill your chest, expand your belly. Pause. Release slowly. That\'s it. That\'s mindfulness. You just did it.' }
+      },
+      {
+        id: 'art6', emoji: '🔥', category: 'Self-awareness',
+        title: "Burnout: recognizing the warning signs early", author: 'Mia Santos', readtime: '9 min read',
+        desc: 'Burnout doesn\'t happen overnight. Here\'s how to catch it before it catches you.',
+        lead: "Burnout is chronic stress that hasn't been properly managed. The tragedy is that by the time most people recognize it, they're already deep in it.",
+        sections: [
+          { heading: 'Three dimensions of burnout', content: 'Psychologist Christina Maslach identified three core components: exhaustion (emotional and physical depletion), cynicism (detachment and negativity about work/life), and inefficacy (feeling like nothing you do matters). All three are warning signals.' },
+          { heading: 'The accumulation trap', content: 'Burnout accumulates gradually. Each day slightly more is demanded; each day slightly less is recovered. The warning signs are subtle: difficulty concentrating, irritability, a pervasive sense of dread, or losing interest in things you once enjoyed.' },
+          { heading: 'Recovery is possible', content: 'Burnout is recoverable — but recovery requires genuine rest, boundaries, and often professional support. It cannot be fixed with a single vacation. It requires systemic changes to how you work and how you relate to your own needs.' },
+        ],
+        infobox: { title: 'Early warning checklist', text: 'Rate yourself 1-10: Energy levels on waking. Enthusiasm for work. Quality of sleep. Presence in conversations. Enjoyment of hobbies. Scores below 5 in 3+ areas suggest early burnout.' }
+      },
+    ];
+
+    const PRACTICES = [
+      {
+        id: 'art-therapy', emoji: '🎨', name: 'Art Therapy', desc: 'Express what words cannot',
+        steps: [
+          'Find paper and any drawing tool — pen, pencil, even your finger in paint.',
+          'Set a timer for 10 minutes. No judgment, no goal. Just move your hand.',
+          'Draw your current feeling as a shape, color, or abstract form.',
+          'When done, sit with what you\'ve created for 2 minutes. What does it tell you?',
+          'Write one sentence about what came up. Then let it go.',
+        ]
+      },
+      {
+        id: 'music-therapy', emoji: '🎵', name: 'Music Therapy', desc: 'Heal through sound',
+        steps: [
+          'Put on headphones and find a quiet space.',
+          'Choose music that matches your current mood — not what you think you should feel.',
+          'Close your eyes. Notice where you feel the music in your body.',
+          'Let the music move through you. Don\'t resist any emotion that arises.',
+          'As the song ends, take 3 slow breaths and return gently.',
+        ]
+      },
+      {
+        id: 'meditation', emoji: '🧘', name: 'Meditation', desc: 'Quiet the inner noise',
+        steps: [
+          'Sit comfortably. Back straight but not rigid. Hands resting in your lap.',
+          'Close your eyes or soften your gaze to the floor.',
+          'Focus on the sensation of breath — the rise and fall of your chest or belly.',
+          'When thoughts arise (they will), gently return attention to the breath. No judgment.',
+          'Practice for 10 minutes. Even 3 minutes daily creates lasting change over time.',
+        ]
+      },
+      {
+        id: 'journaling', emoji: '✍️', name: 'Journaling', desc: 'Process through writing',
+        steps: [
+          'Open your LUMO diary or a physical notebook. No screens in front of you.',
+          'Start with: "Right now I feel..." and write without stopping for 5 minutes.',
+          'Don\'t edit. Don\'t judge. Let the words come however they come.',
+          'Read back what you wrote. What surprises you? What keeps appearing?',
+          'End with one thing you\'re grateful for, no matter how small.',
+        ]
+      },
+      {
+        id: 'breathwork', emoji: '🌬️', name: 'Breathwork', desc: 'Reset your nervous system',
+        steps: [
+          'Sit or lie down comfortably. Place one hand on your chest, one on your belly.',
+          'Inhale slowly through your nose for 4 counts. Feel your belly rise.',
+          'Hold gently for 4 counts. No tension.',
+          'Exhale through your mouth for 6 counts. Longer exhale activates calm.',
+          'Repeat 8 times. Notice how your nervous system settles.',
+        ]
+      },
+      {
+        id: 'mindful-walking', emoji: '🚶', name: 'Mindful Walking', desc: 'Move to reconnect',
+        steps: [
+          'Step outside. Leave your phone on silent or at home.',
+          'Walk at a pace that feels natural — not exercise pace.',
+          'Notice 5 things you can see, 4 you can hear, 3 you can feel physically.',
+          'When your mind wanders to problems, gently return to what\'s around you.',
+          'Walk for at least 15 minutes. Notice how you feel at the end.',
+        ]
+      },
+      {
+        id: 'nature-therapy', emoji: '🌿', name: 'Nature Therapy', desc: 'Ground in the natural world',
+        steps: [
+          'Find a natural setting — a park, garden, or even a single tree will do.',
+          'Stand barefoot on grass if possible. Feel the texture beneath your feet.',
+          'Place your back against a tree or simply sit on the earth.',
+          'Spend 10 minutes observing nature without your phone. Watch clouds, birds, leaves.',
+          'Before you leave, take 5 deep breaths and thank yourself for this pause.',
+        ]
+      },
+      {
+        id: 'somatic-work', emoji: '💪', name: 'Somatic Work', desc: 'Release from the body up',
+        steps: [
+          'Stand with feet shoulder-width apart. Soften your knees slightly.',
+          'Scan your body from feet to head. Where do you feel tension or holding?',
+          'Gently shake that area — hands, shoulders, legs. Shaking discharges stress.',
+          'Place your hands on the area of most tension. Breathe into it.',
+          'End with 5 slow breaths, imagining tension melting downward through your feet.',
+        ]
+      },
+    ];
+
+    const PSYCHOLOGISTS = [
+      {
+        id: 'p1', emoji: '👩‍⚕️', name: 'Dr. Elena Moore', specialty: 'CBT Specialist',
+        tags: ['CBT', 'Anxiety', 'Perfectionism'], price: 85, rating: 4.9, reviews: 127, online: true,
+        bio: 'Specialized in cognitive-behavioral therapy with 12 years of experience helping clients overcome anxiety and perfectionism.',
+      },
+      {
+        id: 'p2', emoji: '👨‍⚕️', name: 'Alex Voronov', specialty: 'Trauma & EMDR Therapy',
+        tags: ['Trauma', 'EMDR', 'PTSD'], price: 95, rating: 4.8, reviews: 89, online: false,
+        bio: 'EMDR-certified therapist specializing in trauma processing and emotional regulation for adults.',
+      },
+      {
+        id: 'p3', emoji: '👩‍⚕️', name: 'Mia Santos', specialty: 'Anxiety & Depression',
+        tags: ['Anxiety', 'Depression', 'Relationships'], price: 70, rating: 5.0, reviews: 63, online: true,
+        bio: 'Compassionate therapist focusing on anxiety, depression and interpersonal patterns using an integrative humanistic approach.',
+      },
+      {
+        id: 'p4', emoji: '👨‍⚕️', name: 'Daniel Kim', specialty: 'Burnout & Life Transitions',
+        tags: ['Burnout', 'Career', 'Young Adults'], price: 80, rating: 4.7, reviews: 45, online: true,
+        bio: 'Helps professionals navigate burnout, career transitions and finding meaning in modern life.',
+      },
+      {
+        id: 'p5', emoji: '👩‍⚕️', name: 'Aisha Bekova', specialty: 'Relationships & Attachment',
+        tags: ['Relationships', 'Attachment', 'Couples'], price: 90, rating: 4.9, reviews: 72, online: false,
+        bio: 'Expert in attachment theory and relationship dynamics. Works with individuals and couples in both Russian and Kazakh.',
+      },
+    ];
+
+    const DIARY_QUESTIONS = [
+      { tag: 'Trigger', q: 'What specific moment today brought up this feeling?' },
+      { tag: 'Body', q: 'Where do you feel this physically right now?' },
+      { tag: 'Pattern', q: 'Have you felt this in similar situations before?' },
+      { tag: 'Need', q: 'If this feeling could speak — what would it need?' },
+      { tag: 'Reframe', q: 'What would make you feel 5% safer right now?' },
+    ];
+
+    const AVATARS = ['😊', '🌙', '🦋', '🌿', '💫', '🎨', '🌊', '🧘', '✨', '🦁', '🌸', '🐺'];
+
+    // ══════════════════════════════════════════════════════════
+    // GROK API
+    // ══════════════════════════════════════════════════════════
+    const GROK_API_URL = 'https://api.x.ai/v1/chat/completions';
+    let GROK_API_KEY = Store.get('grokApiKey', '');
+
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (!key) return;
+      GROK_API_KEY = key;
+      Store.set('grokApiKey', key);
+      document.getElementById('api-key-banner').style.display = 'none';
+      showToast('API key saved! AI responses enabled 🎉');
+    }
+
+    function openApiSetup() {
+      showPage('chat');
+      const banner = document.getElementById('api-key-banner');
+      banner.style.display = 'flex';
+      document.getElementById('api-key-input').value = GROK_API_KEY || '';
+      document.getElementById('api-key-input').focus();
+    }
+
+    function buildSystemPrompt() {
+      const practiceList = PRACTICES.map(p => `- "${p.name}": ${p.desc}`).join('\n');
+      const articleList = ARTICLES.map(a => `- "${a.title}" (${a.category}): ${a.desc}`).join('\n');
+      const diary = getDiary();
+      const entries = Object.entries(diary).sort((a, b) => b[0].localeCompare(a[0])).slice(0, 7);
+      let diaryCtx = '';
+      if (entries.length > 0) {
+        diaryCtx = '\n\nUSER DIARY (recent entries):\n' + entries.map(([date, e]) => `${date}: ${e.emoji || ''} ${e.note || ''}`).join('\n');
+      }
+
+      return `You are LUMO, a warm mental wellness companion. You feel like a caring friend, not a therapist.
+
+Your personality:
+- Warm, genuine, a little playful but always caring
+- Short messages, natural language, like texting a friend
+- Use emojis occasionally
+- Never use bullet points or structured clinical advice
+- Always respond in the language the user writes in (Kazakh, Russian, or English)
+- Listen first. Ask follow-up questions. Only recommend content when it genuinely fits.
+
+IMPORTANT - Response format:
+You MUST respond with valid JSON only, no markdown, no extra text. Format:
+{"reply":"your warm message here","recommendations":[]}
+
+When recommending (max 2 items, only when it truly fits):
+{"reply":"message","recommendations":[{"type":"practice","name":"EXACT practice name","reason":"brief why"}]}
+
+RED FLAGS - suicidal thoughts, self-harm, crisis:
+{"reply":"I'm really concerned about you. Please reach out to a crisis line (in Kazakhstan: 150, free 24/7). You don't have to go through this alone 💜","recommendations":[]}
+
+Available PRACTICES:
+${practiceList}
+
+Available ARTICLES:
+${articleList}${diaryCtx}`;
+    }
+    async function callGrok(messages) {
+      const res = await fetch('https://lumo-25s2.onrender.com/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: buildSystemPrompt() },
+            ...messages,
+          ],
+          max_tokens: 500,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Backend error');
+
+      const data = await res.json();
+      const text = data.content?.[0]?.text || '';
+      try { return JSON.parse(text.replace(/```json|```/g, '').trim()); }
+      catch { return { reply: text, recommendations: [] }; }
+    }
+    // ══════════════════════════════════════════════════════════
+    // NAVIGATION
+    // ══════════════════════════════════════════════════════════
+    let currentPage = 'home';
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+      const page = document.getElementById('page-' + pageId);
+      if (page) page.classList.add('active');
+
+      // Update nav
+      document.querySelectorAll('.nav-item').forEach(n => {
+        const onclick = n.getAttribute('onclick') || '';
+        if (onclick.includes("'" + pageId + "'")) n.classList.add('active');
+      });
+
+      currentPage = pageId;
+
+      // Close sidebar on mobile
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+      }
+
+      // Lazy init
+      if (pageId === 'articles') renderArticlesPage();
+      if (pageId === 'psychologists') renderPsychsPage();
+      if (pageId === 'profile') renderProfilePage();
+      if (pageId === 'diary') renderDiaryPage();
+      if (pageId === 'home') updateHomeStats();
+      if (pageId === 'chat') initChat();
+
+      window.scrollTo(0, 0);
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // ARTICLES PAGE
+    // ══════════════════════════════════════════════════════════
+    let activeFilter = 'All';
+    let articlesRead = Store.get('articlesRead', 0);
+
+    function filterArticles(cat) {
+      activeFilter = cat;
+      document.querySelectorAll('#articles-filter .chip').forEach(c => {
+        c.classList.toggle('active', c.textContent === cat || (cat === 'All' && c.textContent === 'All'));
+      });
+      renderArticlesGrid();
+    }
+
+    function renderArticlesGrid() {
+      const grid = document.getElementById('articles-grid');
+      const filtered = activeFilter === 'All' ? ARTICLES : ARTICLES.filter(a => a.category === activeFilter);
+      grid.innerHTML = filtered.map(a => `
+    <div class="article-card" onclick="openArticle('${a.id}')">
+      <div class="article-cat">${a.category}</div>
+      <div class="article-emoji">${a.emoji}</div>
+      <div class="article-title">${a.title}</div>
+      <div class="article-desc">${a.desc}</div>
+      <div class="article-meta"><span>✍️ ${a.author}</span><span>·</span><span>${a.readtime}</span></div>
+    </div>
+  `).join('');
+    }
+
+    function renderArticlesPage() {
+      renderArticlesGrid();
+      const pg = document.getElementById('practices-grid');
+      pg.innerHTML = PRACTICES.map(p => `
+    <div class="practice-card" onclick="openPractice('${p.id}')">
+      <div class="practice-emoji">${p.emoji}</div>
+      <div class="practice-name">${p.name}</div>
+      <div class="practice-desc">${p.desc}</div>
+    </div>
+  `).join('');
+    }
+
+    function openArticle(id) {
+      const art = ARTICLES.find(a => a.id === id);
+      if (!art) return;
+      document.getElementById('detail-hero-emoji').textContent = art.emoji;
+      document.getElementById('detail-lead').textContent = art.lead;
+      document.getElementById('detail-author').textContent = art.author;
+      document.getElementById('detail-readtime').textContent = art.readtime;
+      document.getElementById('detail-category').textContent = art.category;
+      let html = '';
+      art.sections.forEach(s => {
+        if (s.heading) html += `<h2 class="article-h2">${s.heading}</h2>`;
+        if (s.content) html += `<p class="article-p">${s.content}</p>`;
+      });
+      if (art.infobox) html += `
+    <div class="article-infobox">
+      <div class="article-infobox-icon">💡</div>
+      <div>
+        <div class="article-infobox-title">${art.infobox.title}</div>
+        <div class="article-infobox-text">${art.infobox.text}</div>
+      </div>
+    </div>`;
+      document.getElementById('detail-content').innerHTML = html;
+      showPage('article-detail');
+      // Track
+      articlesRead++;
+      Store.set('articlesRead', articlesRead);
+      completeMission('article');
+      checkAchievement('curious_mind', () => articlesRead >= 3);
+    }
+
+    function openPractice(id) {
+      const p = PRACTICES.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('practice-hero-emoji').textContent = p.emoji;
+      document.getElementById('practice-title').textContent = p.name;
+      document.getElementById('practice-desc').textContent = p.desc;
+      document.getElementById('practice-steps').innerHTML = p.steps.map((s, i) => `
+    <div class="practice-step">
+      <div class="practice-step-num">${i + 1}</div>
+      <div class="practice-step-text">${s}</div>
+    </div>
+  `).join('');
+      showPage('practice-detail');
+    }
+
+    function markPracticeDone() {
+      completeMission('practice');
+      checkAchievement('zen_master', () => true);
+      addXP(60);
+      showToast('Practice completed! +60 XP 🧘');
+      showPage('articles');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // DIARY
+    // ══════════════════════════════════════════════════════════
+    let selectedMood = '';
+    let calYear, calMonth, selectedDate;
+
+    function formatDateKey(d) {
+      if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+      const dt = new Date(d);
+      return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+    }
+    function todayKey() { return formatDateKey(new Date()); }
+
+    function renderDiaryPage() {
+      const now = new Date();
+      if (!calYear) calYear = now.getFullYear();
+      if (!calMonth) calMonth = now.getMonth() + 1;
+      if (!selectedDate) selectedDate = todayKey();
+      renderCalendar();
+      renderDiaryForm();
+      renderDiaryQuestions();
+      renderDiaryEntries();
+      renderDiaryInsight();
+    }
+
+    function changeMonth(delta) {
+      calMonth += delta;
+      if (calMonth > 12) { calMonth = 1; calYear++; }
+      if (calMonth < 1) { calMonth = 12; calYear--; }
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const diary = getDiary();
+      const today = todayKey();
+      const daysInMonth = new Date(calYear, calMonth, 0).getDate();
+      const firstDay = new Date(calYear, calMonth - 1, 1).getDay(); // 0=Sun
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      document.getElementById('cal-month-label').textContent = `${monthNames[calMonth - 1]} ${calYear}`;
+
+      const grid = document.getElementById('cal-grid');
+      const dayLabels = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+      let html = dayLabels.map(d => `<div class="cal-day-label">${d}</div>`).join('');
+
+      // Empty cells
+      for (let i = 0; i < firstDay; i++) html += '<div></div>';
+      for (let d = 1; d <= daysInMonth; d++) {
+        const key = `${calYear}-${String(calMonth).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const entry = diary[key];
+        const isToday = key === today;
+        const isSelected = key === selectedDate;
+        const hasEntry = !!entry;
+        html += `<div class="cal-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${hasEntry && !isSelected ? 'has-entry' : ''}"
+      onclick="selectCalDay('${key}')" title="${entry?.emoji || ''}">${d}${entry?.emoji ? '<br><span style="font-size:8px">' + entry.emoji + '</span>' : ''}</div>`;
+      }
+      grid.innerHTML = html;
+    }
+
+    function selectCalDay(key) {
+      selectedDate = key;
+      renderCalendar();
+      renderDiaryForm();
+    }
+
+    function selectMood(emoji) {
+      selectedMood = emoji;
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.toggle('selected', b.textContent === emoji));
+    }
+
+    function renderDiaryForm() {
+      const diary = getDiary();
+      const entry = diary[selectedDate];
+      const isToday = selectedDate === todayKey();
+      document.getElementById('diary-date-label').textContent = isToday ? "Today's entry" : `Entry for ${selectedDate}`;
+
+      // Reset
+      selectedMood = entry?.emoji || '';
+      document.querySelectorAll('.mood-btn').forEach(b => b.classList.toggle('selected', b.textContent === selectedMood));
+      document.getElementById('diary-note').value = entry?.note || '';
+      ['upset1', 'upset2', 'upset3'].forEach((id, i) => { document.getElementById(id).value = entry?.upsets?.[i] || ''; });
+      ['joy1', 'joy2', 'joy3'].forEach((id, i) => { document.getElementById(id).value = entry?.joys?.[i] || ''; });
+      document.getElementById('diary-save-msg').textContent = '';
+    }
+
+    function saveDiaryEntry() {
+      const note = document.getElementById('diary-note').value.trim();
+      const upsets = ['upset1', 'upset2', 'upset3'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+      const joys = ['joy1', 'joy2', 'joy3'].map(id => document.getElementById(id).value.trim()).filter(Boolean);
+
+      if (!selectedMood && !note) { showToast('Pick a mood or write something first 💜'); return; }
+
+      const diary = getDiary();
+      diary[selectedDate] = { emoji: selectedMood, note, upsets, joys, date: selectedDate };
+      saveDiary(diary);
+
+      document.getElementById('diary-save-msg').textContent = '✓ Saved';
+      completeMission('diary');
+      checkAchievement('first_step', () => Object.keys(getDiary()).length >= 1);
+      addXP(50);
+      updateStreak();
+      renderCalendar();
+      renderDiaryEntries();
+      renderDiaryInsight();
+      showToast('Diary entry saved! +50 XP 📓');
+    }
+
+    function updateStreak() {
+      const diary = getDiary();
+      const today = new Date();
+      let streak = 0;
+      let check = new Date(today);
+      while (true) {
+        const key = formatDateKey(check);
+        if (diary[key]) { streak++; check.setDate(check.getDate() - 1); }
+        else break;
+      }
+      const user = getUser();
+      user.streak = streak;
+      saveUser(user);
+      checkAchievement('streak_3', () => streak >= 3);
+      checkAchievement('streak_7', () => streak >= 7);
+      updateSidebar();
+    }
+
+    function renderDiaryEntries() {
+      const diary = getDiary();
+      const sorted = Object.entries(diary).sort((a, b) => b[0].localeCompare(a[0])).slice(0, 5);
+      const container = document.getElementById('diary-prev-entries');
+      if (sorted.length === 0) {
+        container.innerHTML = '<div style="font-size:12px;color:var(--muted)">No entries yet. Start writing!</div>';
+        return;
+      }
+      container.innerHTML = sorted.map(([date, e]) => `
+    <div class="diary-entry" onclick="selectCalDay('${date}')">
+      <div class="diary-entry-header">
+        <div class="diary-entry-emoji">${e.emoji || '📝'}</div>
+        <div class="diary-entry-date">${date}</div>
+      </div>
+      <div class="diary-entry-text">${e.note || 'No text'}</div>
+    </div>
+  `).join('');
+    }
+
+    function renderDiaryQuestions() {
+      const q = document.getElementById('diary-questions');
+      const shuffled = [...DIARY_QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 3);
+      q.innerHTML = shuffled.map(item => `
+    <div class="question-card">
+      <div class="question-tag">${item.tag}</div>
+      <div class="question-text">${item.q}</div>
+    </div>
+  `).join('');
+    }
+
+    function renderDiaryInsight() {
+      const diary = getDiary();
+      const entries = Object.values(diary);
+      if (entries.length === 0) return;
+      const moods = entries.map(e => e.emoji).filter(Boolean);
+      const moodCounts = {};
+      moods.forEach(m => moodCounts[m] = (moodCounts[m] || 0) + 1);
+      const topMood = Object.entries(moodCounts).sort((a, b) => b[1] - a[1])[0];
+      const moodNames = { '😊': 'happy', '😌': 'calm', '😰': 'anxious', '😔': 'sad', '😤': 'frustrated', '🥳': 'excited', '😶': 'numb' };
+      const el = document.getElementById('diary-insight');
+      if (topMood) {
+        el.textContent = `Your most frequent mood has been ${topMood[0]} (${moodNames[topMood[0]] || 'this emotion'}) — appearing ${topMood[1]} time${topMood[1] > 1 ? 's' : ''} in your diary. Patterns like these reveal a lot about what your nervous system is navigating 💜`;
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // CHAT
+    // ══════════════════════════════════════════════════════════
+    let chatMessages = []; // [{role, content}]
+    let chatMsgCount = Store.get('chatMsgCount', 0);
+
+    function initChat() {
+
+    }
+
+    function appendChatBubble(role, text) {
+      const msgs = document.getElementById('chat-msgs');
+      const typing = document.getElementById('typing-indicator');
+      const div = document.createElement('div');
+      div.className = `chat-msg ${role === 'user' ? 'user' : 'lumo'}`;
+      div.innerHTML = `
+    <div class="chat-msg-av">${role === 'user' ? '😊' : '🌙'}</div>
+    <div><div class="chat-bubble">${escapeHtml(text)}</div></div>
+  `;
+      msgs.insertBefore(div, typing);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function appendRecommendation(rec) {
+      const msgs = document.getElementById('chat-msgs');
+      const typing = document.getElementById('typing-indicator');
+      const practice = PRACTICES.find(p => p.name.toLowerCase() === rec.name.toLowerCase());
+      const article = ARTICLES.find(a => a.title.toLowerCase() === rec.name.toLowerCase());
+      const emoji = practice?.emoji || article?.emoji || '💜';
+      const div = document.createElement('div');
+      div.className = 'chat-msg lumo';
+      div.style.marginTop = '4px';
+      div.innerHTML = `
+    <div class="chat-msg-av" style="visibility:hidden">🌙</div>
+    <div class="rec-card" onclick="${practice ? `openPractice('${practice.id}')` : article ? `openArticle('${article.id}')` : ``}">
+      <div class="rec-emoji">${emoji}</div>
+      <div>
+        <div class="rec-name">${rec.name}</div>
+        <div class="rec-reason">${rec.reason}</div>
+      </div>
+    </div>
+  `;
+      msgs.insertBefore(div, typing);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    async function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendChatBubble('user', text);
+      input.value = '';
+      chatMessages.push({ role: 'user', content: text });
+
+      const btn = document.getElementById('chat-send-btn');
+      btn.disabled = true;
+      document.getElementById('typing-indicator').style.display = 'flex';
+      document.getElementById('chat-msgs').scrollTop = document.getElementById('chat-msgs').scrollHeight;
+
+      try {
+        const result = await callGrok(chatMessages.slice(-20));
+        document.getElementById('typing-indicator').style.display = 'none';
+        const reply = result.reply || '...';
+        appendChatBubble('lumo', reply);
+        chatMessages.push({ role: 'assistant', content: reply });
+        if (result.recommendations?.length) {
+          result.recommendations.forEach(r => appendRecommendation(r));
+        }
+        chatMsgCount++;
+        Store.set('chatMsgCount', chatMsgCount);
+        completeMission('chat');
+        checkAchievement('chatterbox', () => chatMsgCount >= 10);
+        addXP(10);
+      } catch (err) {
+        document.getElementById('typing-indicator').style.display = 'none';
+        appendChatBubble('lumo', `Something went wrong 💜 ${err.message || 'Please try again.'}`);
+      }
+      btn.disabled = false;
+      input.focus();
+    }
+
+    function sendTopic(topic) {
+      document.getElementById('chat-input').value = topic;
+      sendChatMessage();
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // PSYCHOLOGISTS
+    // ══════════════════════════════════════════════════════════
+    let psychFilter = 'All';
+    let bookingPsych = null;
+    let selectedSlot = null;
+
+    function filterPsychs(tag) {
+      psychFilter = tag;
+      document.querySelectorAll('#page-psychologists .chip').forEach(c => {
+        c.classList.toggle('active', c.textContent === tag || (tag === 'All' && c.textContent === 'All'));
+      });
+      renderPsychsGrid();
+    }
+
+    function renderPsychsPage() { renderPsychsGrid(); }
+
+    function renderPsychsGrid() {
+      const list = psychFilter === 'All' ? PSYCHOLOGISTS : PSYCHOLOGISTS.filter(p => p.tags.includes(psychFilter));
+      document.getElementById('psych-grid').innerHTML = list.map(p => `
+    <div class="psych-card">
+      <div class="psych-av">${p.emoji}</div>
+      <div class="psych-info">
+        <div class="psych-name">${p.name} ${p.online ? '<span class="psych-online">● Online</span>' : ''}</div>
+        <div class="psych-spec">${p.specialty}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">${p.bio}</div>
+        <div class="psych-tags">${p.tags.map(t => `<span class="psych-tag">${t}</span>`).join('')}</div>
+        <div class="psych-footer">
+          <div>
+            <div class="psych-price">$${p.price} <span>per session</span></div>
+            <div class="psych-rating"><span class="psych-stars">★★★★★</span> ${p.rating} (${p.reviews} reviews)</div>
+          </div>
+          <button class="psych-book-btn" onclick="openBooking('${p.id}')">Book</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    const TIME_SLOTS = ['9:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+
+    function openBooking(id) {
+      bookingPsych = PSYCHOLOGISTS.find(p => p.id === id);
+      selectedSlot = null;
+      document.getElementById('booking-psych-name').textContent = `Book with ${bookingPsych.name}`;
+      const available = TIME_SLOTS.filter(() => Math.random() > 0.3);
+      document.getElementById('time-slots').innerHTML = available.map(t => `
+    <div class="time-slot" onclick="selectSlot(this,'${t}')">${t}</div>
+  `).join('');
+      document.getElementById('booking-modal').classList.add('open');
+    }
+
+    function selectSlot(el, time) {
+      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedSlot = time;
+    }
+
+    function confirmBooking() {
+      if (!selectedSlot) { showToast('Please select a time slot'); return; }
+      closeModal();
+      addXP(100);
+      checkAchievement('brave_seeker', () => true);
+      completeMission('book');
+      showToast(`Session booked with ${bookingPsych.name} at ${selectedSlot} 🎉 +100 XP`);
+    }
+
+    function closeModal() {
+      document.getElementById('booking-modal').classList.remove('open');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // PROFILE
+    // ══════════════════════════════════════════════════════════
+    let moodChartInstance = null;
+
+    function renderProfilePage() {
+      const user = getUser();
+      const level = getLevel(user.points);
+      const nextLevel = LEVELS.find(l => l.num === level.num + 1);
+      const pct = nextLevel ? Math.round(((user.points - level.min) / (nextLevel.min - level.min)) * 100) : 100;
+
+      document.getElementById('prof-av').textContent = user.avatar || '😊';
+      document.getElementById('prof-name').textContent = user.name || 'Demo User';
+      document.getElementById('prof-level').textContent = `Level ${level.num} · ${level.title}`;
+      document.getElementById('prof-bio').textContent = user.bio || 'Click to add your bio...';
+      document.getElementById('prof-bar').style.width = pct + '%';
+      document.getElementById('prof-xp-cur').textContent = `${user.points} XP`;
+      document.getElementById('prof-xp-next').textContent = nextLevel ? `→ ${nextLevel.title} (${nextLevel.min} XP)` : 'Max Level!';
+      document.getElementById('prof-streak').textContent = user.streak || 0;
+      document.getElementById('prof-entries-count').textContent = Object.keys(getDiary()).length;
+
+      renderAchievementsGrid(user);
+      renderMissionsProfile();
+      renderMoodChart();
+    }
+
+    function renderAchievementsGrid(user) {
+      const earned = user.achievements || [];
+      document.getElementById('achievements-grid').innerHTML = ACHIEVEMENTS_DEF.map(a => `
+    <div class="achievement ${earned.includes(a.id) ? 'earned' : ''}">
+      <div class="achievement-emoji">${a.emoji}</div>
+      <div class="achievement-label">${a.label}</div>
+      <div class="achievement-desc">${a.desc}</div>
+    </div>
+  `).join('');
+    }
+
+    function renderMissionsProfile() {
+      const missions = getMissions();
+      document.getElementById('missions-list').innerHTML = missions.map(m => `
+    <div class="mission-item">
+      <div class="mission-check ${m.done ? 'done' : ''}">${m.done ? '✓' : ''}</div>
+      <div>
+        <div class="mission-title">${m.title}</div>
+        <div class="mission-sub">${m.desc}</div>
+      </div>
+      <div class="mission-xp">+${m.xp} XP</div>
+    </div>
+  `).join('');
+    }
+
+    function renderMoodChart() {
+      const diary = getDiary();
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const emojiToScore = { '😔': 1, '😰': 2, '😌': 3, '😊': 4, '🥳': 5, '😤': 2, '😶': 2 };
+      const labels = [], data = [];
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const key = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const entry = diary[key];
+        labels.push(d);
+        data.push(entry?.emoji ? (emojiToScore[entry.emoji] || null) : null);
+      }
+
+      const ctx = document.getElementById('mood-chart').getContext('2d');
+      if (moodChartInstance) moodChartInstance.destroy();
+      moodChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Mood', data,
+            borderColor: '#B9B1FF', backgroundColor: 'rgba(185,177,255,0.1)',
+            tension: 0.4, fill: true, pointBackgroundColor: '#B9B1FF',
+            pointRadius: 4, spanGaps: true,
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { min: 0, max: 6, ticks: { stepSize: 1, callback: v => ['', '😔', '😰', '😌', '😊', '🥳'][v] || '' }, grid: { color: 'rgba(0,0,0,0.04)' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    let avatarIdx = 0;
+    function cycleAvatar() {
+      avatarIdx = (avatarIdx + 1) % AVATARS.length;
+      const av = AVATARS[avatarIdx];
+      document.getElementById('prof-av').textContent = av;
+      document.getElementById('sb-avatar').textContent = av;
+      const user = getUser(); user.avatar = av; saveUser(user);
+    }
+
+    function saveName(name) {
+      const user = getUser(); user.name = name.trim() || 'Demo User'; saveUser(user);
+      document.getElementById('sb-name').textContent = user.name;
+    }
+
+    function saveBio(bio) {
+      const user = getUser(); user.bio = bio; saveUser(user);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // GAMIFICATION
+    // ══════════════════════════════════════════════════════════
+    function addXP(amount) {
+      const user = getUser();
+      user.points = (user.points || 0) + amount;
+      saveUser(user);
+      updateSidebar();
+      updateHomeStats();
+    }
+
+    function completeMission(trigger) {
+      const missions = getMissions();
+      const m = missions.find(x => x.trigger === trigger && !x.done);
+      if (m) {
+        m.done = true;
+        saveMissions(missions);
+        addXP(m.xp);
+        showToast(`Mission complete: "${m.title}" +${m.xp} XP ⭐`);
+      }
+    }
+
+    function checkAchievement(id, condition) {
+      const user = getUser();
+      if ((user.achievements || []).includes(id)) return;
+      if (condition()) {
+        user.achievements = [...(user.achievements || []), id];
+        saveUser(user);
+        const def = ACHIEVEMENTS_DEF.find(a => a.id === id);
+        if (def) showToast(`🏆 Achievement unlocked: ${def.emoji} ${def.label}!`);
+      }
+    }
+
+    function updateSidebar() {
+      const user = getUser();
+      const level = getLevel(user.points || 0);
+      document.getElementById('sb-name').textContent = user.name || 'Demo User';
+      document.getElementById('sb-level').textContent = `Level ${level.num} · ${level.title}`;
+      document.getElementById('sb-avatar').textContent = user.avatar || '😊';
+    }
+
+    function updateHomeStats() {
+      const user = getUser();
+      const diary = getDiary();
+      document.getElementById('home-streak').textContent = user.streak || 0;
+      document.getElementById('home-entries').textContent = Object.keys(diary).length;
+      document.getElementById('home-msgs').textContent = chatMsgCount || 0;
+      document.getElementById('home-xp').textContent = user.points || 0;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // TOAST
+    // ══════════════════════════════════════════════════════════
+    function showToast(msg) {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // LANG (basic stub)
+    // ══════════════════════════════════════════════════════════
+    function setLang(lang) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase() || (lang === 'kk' && b.textContent === 'ҚАЗ')));
+      Store.set('lang', lang);
+      if (lang !== 'en') showToast('Full localization coming in production version 💜');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // INIT
+    // ══════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSidebar();
+      updateHomeStats();
+      // Close sidebar when clicking main on mobile
+      document.getElementById('main').addEventListener('click', () => {
+        if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+      });
+      // Close booking modal on overlay click
+      document.getElementById('booking-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeModal();
+      });
+      // Restore lang
+      const lang = Store.get('lang', 'en');
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase() || (lang === 'kk' && b.textContent === 'ҚАЗ')));
+    });
+  </script>
+</body>
+
+</html>
